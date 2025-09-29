@@ -19,10 +19,15 @@ public record UserRequest(
   @NotNull(message = "Password is required")
   @NotBlank(message = "Password is required")
   @Size(min=8, message = "Password must be at least 8 characters")
-  String password ) {
+  String password,
+  
+  @NotNull(message = "Role is required")
+  @NotBlank(message = "Role is required")
+  String role
+  ) {
 
   public User toModel(){
-    return new User(null, this.name, this.email, this.password, null, false);
+    return new User(null, this.name, this.email, this.password, null, false, this.role);
   }
 
 }

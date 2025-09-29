@@ -37,14 +37,24 @@ public class User implements UserDetails{
 
   private boolean enabled;
 
+  private String role;
 
-  public User(Long id, String name, String email, String password, String verificationCode, boolean enabled) {
+
+  public User(Long id, String name, String email, String password, String verificationCode, boolean enabled, String role) {
     this.id = id;
     this.name = name;
     this.email = email;
     this.password = password;
     this.verificationCode = verificationCode;
     this.enabled = enabled;
+    this.role = role;
+  }
+
+  public User( String name, String email, String password, String role) {
+    this.name = name;
+    this.email = email;
+    this.password = password;
+    this.role = role;
   }
 
   public User() {
@@ -79,5 +89,11 @@ public class User implements UserDetails{
   public boolean isEnabled() {
     return this.enabled;
   }
+
+    @Override
+    public String getPassword() {
+      return this.password;
+      // throw new UnsupportedOperationException("Not supported yet.");
+    }
   
 }

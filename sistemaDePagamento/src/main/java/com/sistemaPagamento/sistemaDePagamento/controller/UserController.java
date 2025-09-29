@@ -30,7 +30,7 @@ public class UserController {
   @Autowired
   private UserService userServices;
 
-  @PostMapping
+  @PostMapping ("/register")
   public ResponseEntity<UserResponse> RegisterUser(@RequestBody @Valid UserRequest userRequest) throws MessagingException, UnsupportedEncodingException{
     
     User user = userRequest.toModel();
@@ -49,9 +49,21 @@ public class UserController {
   }
 
   @GetMapping("/all")
-    public ResponseEntity<List<UserResponse>> getAllUsers() {
-        List<UserResponse> users = userServices.getAllUsers();
-        return ResponseEntity.ok(users);
-    }
+  public ResponseEntity<List<UserResponse>> getAllUsers() {
+      try {
+          List<UserResponse> users = userServices.getAllUsers();
+          return ResponseEntity.ok(users);
+      } catch (Exception e) {
+          e.printStackTrace(); // Vai mostrar no console o erro real
+          return ResponseEntity.status(500).build();
+      }
+  }
 
+  @GetMapping("/teste")
+  public String teste(){
+    return "você está logado";
+  }
+  
+  
+  
 }

@@ -7,6 +7,8 @@ public class UserResponse {
     private Long id;
     private String name;
     private String email;
+    private String role;
+    public boolean enabled;
 
     // Getters e Setters
     public Long getId() {
@@ -33,12 +35,30 @@ public class UserResponse {
         this.email = email;
     }
 
-    // Método estático para converter User em UserResponse
+    public String getRole(){
+        return role;
+    }
+
+    public void setRole(String role){
+        this.role = role;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public static UserResponse fromModel(User user) {
         UserResponse response = new UserResponse();
         response.setId(user.getId());
         response.setName(user.getName());
         response.setEmail(user.getEmail());
+        response.setRole(user.getRole());
+        response.setEnabled(user.isEnabled());
+
         return response;
     }
 }

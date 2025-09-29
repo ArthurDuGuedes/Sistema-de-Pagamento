@@ -8,7 +8,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -17,12 +22,26 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-      http
-          .csrf(csrf -> csrf.disable())        
-          .authorizeHttpRequests(auth -> auth
-              .anyRequest().permitAll());      
-      return http.build();
+      return http.csrf(csrf -> csrf.disable())
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(auth -> auth
+          // .requestMatchers(HttpMethod.POST, "/user/register").permitAll()
+          // .requestMatchers(HttpMethod.GET, "/user/verify").permitAll()
+          // .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+          // .requestMatchers(HttpMethod.GET, "/user/all").permitAll()
+          .anyRequest().permitAll()
+        ).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+        .build();
   }
+
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+
+    return authenticationConfiguration.getAuthenticationManager();
+
+  }
+
+
   @Bean
     public PasswordEncoder passwordEncoder(){
       return new BCryptPasswordEncoder();

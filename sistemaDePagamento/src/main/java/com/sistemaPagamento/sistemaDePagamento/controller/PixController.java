@@ -1,0 +1,44 @@
+package com.sistemaPagamento.sistemaDePagamento.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.json.JSONObject;
+
+import com.sistemaPagamento.sistemaDePagamento.services.PixService;
+import com.sistemaPagamento.sistemaDePagamento.dto.PixChargeRequest;
+
+@RestController
+@RequestMapping("/pix")
+
+public class PixController {
+  @Autowired
+  private PixService pixService;
+
+  @GetMapping
+  public ResponseEntity<String> pixCreateEVP() {
+      JSONObject response = this.pixService.pixCreateEVP();
+
+      if (response == null) {
+          return ResponseEntity.status(500)
+                  .contentType(MediaType.APPLICATION_JSON)
+                  .body("{\"error\":\"Falha ao criar EVP\"}");
+      }
+
+      return ResponseEntity.ok()
+              .contentType(MediaType.APPLICATION_JSON)
+              .body(response.toString());
+  }
+
+  @PostMapping
+  public ResponseEntity pixCreanteCharge(@RequestBody PixChargeRequest pixChargeRequest){
+    
+    JSONObject response = this.pixService.pixCreateCharge(pixChargeRequest);
+    return ResponseEntity.ok(response);
+  }
+}
