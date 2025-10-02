@@ -14,31 +14,27 @@ import com.sistemaPagamento.sistemaDePagamento.services.PixService;
 import com.sistemaPagamento.sistemaDePagamento.dto.PixChargeRequest;
 
 @RestController
-@RequestMapping("/pix")
-
+@RequestMapping("/api/v1/pix")
 public class PixController {
-  @Autowired
-  private PixService pixService;
 
-  @GetMapping
-  public ResponseEntity<String> pixCreateEVP() {
-      JSONObject response = this.pixService.pixCreateEVP();
+    @Autowired
+    private PixService pixService;
 
-      if (response == null) {
-          return ResponseEntity.status(500)
-                  .contentType(MediaType.APPLICATION_JSON)
-                  .body("{\"error\":\"Falha ao criar EVP\"}");
-      }
+    @GetMapping
+    public ResponseEntity pixCreateEVP(){
 
-      return ResponseEntity.ok()
-              .contentType(MediaType.APPLICATION_JSON)
-              .body(response.toString());
-  }
+        JSONObject response = this.pixService.pixCreateEVP();
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response.toString());
+    }
 
-  @PostMapping
-  public ResponseEntity pixCreanteCharge(@RequestBody PixChargeRequest pixChargeRequest){
-    
-    JSONObject response = this.pixService.pixCreateCharge(pixChargeRequest);
-    return ResponseEntity.ok(response);
-  }
+    @PostMapping
+    public ResponseEntity pixCreateCharge(@RequestBody PixChargeRequest pixChargeRequest){
+        JSONObject response = this.pixService.pixCreateCharge(pixChargeRequest);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response.toString());
+    }
 }

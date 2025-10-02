@@ -25,11 +25,11 @@ public class SecurityConfig {
       return http.csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
-          // .requestMatchers(HttpMethod.POST, "/user/register").permitAll()
-          // .requestMatchers(HttpMethod.GET, "/user/verify").permitAll()
-          // .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-          // .requestMatchers(HttpMethod.GET, "/user/all").permitAll()
-          .anyRequest().permitAll()
+          .requestMatchers(HttpMethod.POST, "/user/register").permitAll()
+          .requestMatchers(HttpMethod.GET, "/user/verify").permitAll()
+          .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+          .requestMatchers(HttpMethod.GET, "/user/all").permitAll()
+          .anyRequest().authenticated()
         ).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
   }
